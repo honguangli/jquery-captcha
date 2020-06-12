@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>jquery-captcha-lgh</title>
+    <style>
+      #canvas {
+        width: 100px;
+        height: 40px;
+      }
+    </style>
+	</head>
+	<body>
+		<div class="captcha-box">
+      <canvas id="canvas"></canvas>
+      <input name="code">
+      <button id="valid">校验</button>
+    </div>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery-captcha-lgh.js"></script>
+    <script>
+      // step-1
+      const captcha = new Captcha($('#canvas'));
+      // api
+      //captcha.refresh();
+      //captcha.getCode();
+      //captcha.valid("");
+      
+      $('#valid').on('click', function() {
+        const ans = captcha.valid($('input[name="code"]').val());
+        console.log(ans);
+        captcha.refresh();
+      })
+    </script>
+	</body>
+</html>
