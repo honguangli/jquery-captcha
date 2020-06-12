@@ -5,7 +5,7 @@
  */
 ;
 let Captcha;
-(function() {
+(function($) {
   "use strict";
   // 默认配置
   const defaults = {
@@ -71,6 +71,14 @@ let Captcha;
       context.lineTo(x + 1, y + 1);
       context.stroke();
     }
+    
+    //得到随机的颜色值
+    function randomColor() { 
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+      return "rgb(" + r + "," + g + "," + b + ")";
+    }
   };
 
   Captcha.prototype.getCode = function() {
@@ -79,17 +87,10 @@ let Captcha;
   
   Captcha.prototype.valid = function(code) {
     const self = this;
-    if (self.options.autoRefresh) {
+    const ans = code.toString().toLowerCase() === self.getCode().toLowerCase();
+    if (!ans && self.options.autoRefresh) {
       self.refresh();
     }
-    return code.toString().toLowerCase() === this.options.code.join('').toLowerCase();
-  }
-
-  //得到随机的颜色值
-  function randomColor() { 
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
-    return "rgb(" + r + "," + g + "," + b + ")";
-  }
-})();
+    return ans;
+  };
+})($);
