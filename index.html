@@ -4,15 +4,19 @@
 		<meta charset="utf-8" />
 		<title>jquery-captcha-lgh</title>
     <style>
+      .captcha-box {
+        width: 800px;
+        margin: 0 auto;
+      }
       #canvas {
-        width: 100px;
-        height: 40px;
+        border: 1px solid #cccccc;
       }
     </style>
 	</head>
 	<body>
 		<div class="captcha-box">
       <canvas id="canvas"></canvas>
+      <button id="refresh">刷新</button>
       <input name="code">
       <button id="valid">校验</button>
     </div>
@@ -21,15 +25,28 @@
     <script>
       // step-1
       const captcha = new Captcha($('#canvas'));
+      // step-2
+      //captcha.valid("");
+      
       // api
       //captcha.refresh();
       //captcha.getCode();
       //captcha.valid("");
       
+      $('#refresh').on('click', function() {
+        captcha.refresh();
+      });
       $('#valid').on('click', function() {
-        const ans = captcha.valid($('input[name="code"]').val());
-        console.log(ans);
-        //captcha.refresh();
+        const val = $('input[name="code"]').val();
+        if (val === "") {
+          alert("请输入验证码");
+          return
+        }
+        console.log("val:", val);
+        console.log("code:", captcha.getCode());
+        const ans = captcha.valid(val);
+        console.log("result:", ans);
+        alert(ans?'验证通过':'验证码错误');
       })
     </script>
 	</body>
