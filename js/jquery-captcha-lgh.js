@@ -9,15 +9,16 @@ let Captcha;
   "use strict";
   // 默认配置
   const defaults = {
-    length: 4,                   // 校验码长度
-    code: [],                    // 校验码
-    clickRefresh: true,          // 点击刷新
-    autoRefresh: true,           // 调用校验接口后是否自动刷新
-    width: 100,                  // canvas宽度
-    height: 40,                  // canvas高度
-    font: 'bold 23px 微软雅黑',   // 文本字体样式
+    length: 4,                     // 校验码长度
+    code: [],                      // 校验码
+    width: 100,                    // canvas宽度
+    height: 40,                    // canvas高度
+    font: 'bold 23px 微软雅黑',     // 文本字体样式
     resourceType: 'aA0',           // 资源类型：a-小写字母、A-大写字母、0-数字，可任意组合
     resourceExtra: [],             // 额外资源
+    clickRefresh: true,            // 点击刷新
+    autoRefresh: true,             // 调用校验接口后是否自动刷新
+    caseSensitive: false,          // 大小写是否敏感
   };
 
   const resourceUpper = ["A","B","C","E","F","G","H","J","K","L","M","N","P","Q","R","S","T","W","X","Y","Z"];
@@ -107,7 +108,13 @@ let Captcha;
   // 校验
   Captcha.prototype.valid = function(code) {
     const self = this;
-    const ans = code.toString().toLowerCase() === self.getCode().toLowerCase();
+    let ans = false;
+    console.log(self.options.caseSensitive);
+    if (!self.options.caseSensitive) {
+      ans = code.toLowerCase() === self.getCode().toLowerCase();
+    } else {
+      ans = code === self.getCode();
+    }
     if (!ans && self.options.autoRefresh) {
       self.refresh();
     }
