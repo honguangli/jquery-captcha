@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>jquery-captcha-lgh</title>
+		<title>jquery-captcha</title>
     <style>
       .captcha-box {
         width: 800px;
@@ -20,18 +20,21 @@
       <input name="code">
       <button id="valid">校验</button>
     </div>
-    <script type="text/javascript" src="jquery.min.js"></script>
-    <script type="text/javascript" src="js/jquery-captcha-lgh.min.js"></script>
+    <script src="https://www.jq22.com/jquery/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="js/jquery-captcha.min.js"></script>
     <script>
       // step-1
-      const captcha = new Captcha($('#canvas'));
-      // step-2
-      //captcha.valid("");
-      
-      // api
-      //captcha.refresh();
-      //captcha.getCode();
-      //captcha.valid("");
+      const captcha = new Captcha($('#canvas'), {
+        length: 6,                          // 校验码长度
+        width: 300,                         // canvas宽度
+        height: 80,                         // canvas高度
+        font: 'bold 23px 微软雅黑',          // 文本字体样式
+        resourceType: 'aA0',                // 资源类型：a-小写字母、A-大写字母、0-数字，可任意组合
+        resourceExtra: [],                  // 额外资源
+        clickRefresh: true,                 // 点击刷新
+        autoRefresh: true,                  // 调用校验接口后是否自动刷新（校验成功不会刷新）
+        caseSensitive: false,               // 大小写是否敏感
+      });
       
       $('#refresh').on('click', function() {
         captcha.refresh();
@@ -44,9 +47,13 @@
         }
         console.log("val:", val);
         console.log("code:", captcha.getCode());
-        const ans = captcha.valid(val);
-        console.log("result:", ans);
-        alert(ans?'验证通过':'验证码错误');
+        if (captcha.valid(val)) {
+          // success
+          alert('验证通过');
+        } else {
+          // failure
+          alert('验证码错误');
+        }
       })
     </script>
 	</body>
